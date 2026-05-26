@@ -1,28 +1,28 @@
 import svgPaths from "./svg-56h6k7icfm";
-const imgGptImage1911 = "/assets/1df17ea5118bf374199b16954c3bea2b1f1fc85b.png";
-const imgRectangle240652684 = "/assets/a52b51c1060c91ff24445248afc50e0a7d342d70.png";
-const imgImage2 = "/assets/7037144404edbd4836f8798551db4a3414381141.png";
-const imgTheTheCharacterFromTheImageGptImage138AsItIsAndChangeOneOfTheStickersOnHerFaceToASmallRoundStickerFromTheImageScreenshot23 = "/assets/0503f6a38b27971b6187bcacaaa414830b68bff6.png";
-const imgCoin = "/assets/ab7fade0a06bda0d916c5d5eb735419132ceaf48.png";
-const imgImage109079 = "/assets/f1ffa044d7455cbad24b9ecd740dd62ebf5a2aa4.png";
-const imgImage109107 = "/assets/e84c074a31198c206736539930364e9934d64e31.png";
-const imgImage109100 = "/assets/142831bfdb2e36c49994ae9e1e5ca3932bc303a4.png";
-const imgGptImage1572 = "/assets/fb71f582682cef47de4ea550a7558052cefa9918.png";
-const imgGptImage1552 = "/assets/cee77a9762ffd728115a36bc9acff50790ea6258.png";
-const imgImage109108 = "/assets/a8babdb07e643e7db5759faf5f5ad06381bffb22.png";
-const imgGptImage1531 = "/assets/802430baf74f7780474b3478af4f73cc542ccd78.png";
-const imgGptImage1561 = "/assets/f24474a8f0b2001f1fd3e577ceee3e5c0b8303aa.png";
-const imgGptImage1852 = "/assets/c8f8088965d90ee1418c94917f76784e113976ae.png";
-const imgGptImage1661 = "/assets/d480f6ec1ff1890611b1955ca358dfef39ac86c6.png";
-const imgGptImage1691 = "/assets/7872ef816d3bd3daa30e978484140c0e264d454f.png";
-const imgGptImage1681 = "/assets/29322f29a0eafc704e4d63c354f302671ef5b4e0.png";
-const imgGptImage1671 = "/assets/156f27bcbb5e0a9be3bef3e2d14f79250681b574.png";
-const imgGptImage793 = "/assets/1938bbc13110b6e6821fec8bb83c782ab4f69cdb.png";
-const imgGptImage851 = "/assets/315083cfbf2b276b96a28ab6987ea9ae99f62290.png";
-const imgGptImage1781 = "/assets/3ddada1ad0a06dfeb07ede00ea6672444ff7b998.png";
-const imgGptImage1802 = "/assets/696ad895d2189b867c12d55c5ff0a0bffde08a42.png";
-const imgGptImage1832 = "/assets/7b1610e43a15c9943c462f5aa1f4d4e58a0e655c.png";
-const imgGptImage1822 = "/assets/896e70685001806add30d240dfdbc6d301eb9387.png";
+const imgGptImage1911 = `${import.meta.env.BASE_URL}assets/1df17ea5118bf374199b16954c3bea2b1f1fc85b.png`;
+const imgRectangle240652684 = `${import.meta.env.BASE_URL}assets/a52b51c1060c91ff24445248afc50e0a7d342d70.png`;
+const imgImage2 = `${import.meta.env.BASE_URL}assets/7037144404edbd4836f8798551db4a3414381141.png`;
+const imgTheTheCharacterFromTheImageGptImage138AsItIsAndChangeOneOfTheStickersOnHerFaceToASmallRoundStickerFromTheImageScreenshot23 = `${import.meta.env.BASE_URL}assets/0503f6a38b27971b6187bcacaaa414830b68bff6.png`;
+const imgCoin = `${import.meta.env.BASE_URL}assets/ab7fade0a06bda0d916c5d5eb735419132ceaf48.png`;
+const imgImage109079 = `${import.meta.env.BASE_URL}assets/f1ffa044d7455cbad24b9ecd740dd62ebf5a2aa4.png`;
+const imgImage109107 = `${import.meta.env.BASE_URL}assets/e84c074a31198c206736539930364e9934d64e31.png`;
+const imgImage109100 = `${import.meta.env.BASE_URL}assets/142831bfdb2e36c49994ae9e1e5ca3932bc303a4.png`;
+const imgGptImage1572 = `${import.meta.env.BASE_URL}assets/fb71f582682cef47de4ea550a7558052cefa9918.png`;
+const imgGptImage1552 = `${import.meta.env.BASE_URL}assets/cee77a9762ffd728115a36bc9acff50790ea6258.png`;
+const imgImage109108 = `${import.meta.env.BASE_URL}assets/a8babdb07e643e7db5759faf5f5ad06381bffb22.png`;
+const imgGptImage1531 = `${import.meta.env.BASE_URL}assets/802430baf74f7780474b3478af4f73cc542ccd78.png`;
+const imgGptImage1561 = `${import.meta.env.BASE_URL}assets/f24474a8f0b2001f1fd3e577ceee3e5c0b8303aa.png`;
+const imgGptImage1852 = `${import.meta.env.BASE_URL}assets/c8f8088965d90ee1418c94917f76784e113976ae.png`;
+const imgGptImage1661 = `${import.meta.env.BASE_URL}assets/d480f6ec1ff1890611b1955ca358dfef39ac86c6.png`;
+const imgGptImage1691 = `${import.meta.env.BASE_URL}assets/7872ef816d3bd3daa30e978484140c0e264d454f.png`;
+const imgGptImage1681 = `${import.meta.env.BASE_URL}assets/29322f29a0eafc704e4d63c354f302671ef5b4e0.png`;
+const imgGptImage1671 = `${import.meta.env.BASE_URL}assets/156f27bcbb5e0a9be3bef3e2d14f79250681b574.png`;
+const imgGptImage793 = `${import.meta.env.BASE_URL}assets/1938bbc13110b6e6821fec8bb83c782ab4f69cdb.png`;
+const imgGptImage851 = `${import.meta.env.BASE_URL}assets/315083cfbf2b276b96a28ab6987ea9ae99f62290.png`;
+const imgGptImage1781 = `${import.meta.env.BASE_URL}assets/3ddada1ad0a06dfeb07ede00ea6672444ff7b998.png`;
+const imgGptImage1802 = `${import.meta.env.BASE_URL}assets/696ad895d2189b867c12d55c5ff0a0bffde08a42.png`;
+const imgGptImage1832 = `${import.meta.env.BASE_URL}assets/7b1610e43a15c9943c462f5aa1f4d4e58a0e655c.png`;
+const imgGptImage1822 = `${import.meta.env.BASE_URL}assets/896e70685001806add30d240dfdbc6d301eb9387.png`;
 import { imgTheTheCharacterFromTheImageGptImage138AsItIsAndChangeOneOfTheStickersOnHerFaceToASmallRoundStickerFromTheImageScreenshot22, imgGptImage1571, imgGptImage1551, imgGptImage1573, imgGptImage1801, imgGptImage1831, imgGptImage1821 } from "./svg-nvi3h";
 
 function Frame67() {
@@ -54,7 +54,7 @@ function Frame67() {
       <div className="absolute h-[476px] left-[138px] top-[85px] w-[431px]" data-name="Create_a_looped_animation_of_the_given_character_avatar._The_animation_should_be_subtle,_with_natural_and_smooth_movements,_while_preserving_the_character's_original_facial_features,_expression,_and_background_without_any_changes._The_character_sh… 1">
         <div className="absolute inset-0 overflow-hidden">
           <video autoPlay className="absolute h-full left-[-0.09%] max-w-none top-0 w-[113.87%]" controlsList="nodownload" loop playsInline>
-            <source src="/_videos/v1/b2f46e805ba0833e4dc1ff3f5470d307270f3be0" />
+            <source src={`${import.meta.env.BASE_URL}_videos/v1/b2f46e805ba0833e4dc1ff3f5470d307270f3be0`} />
           </video>
         </div>
       </div>

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 import { Search, X, ArrowLeft, ArrowRight, ChevronRight, Eye } from "lucide-react";
 import { Masonry, useInfiniteLoader, type RenderComponentProps } from "masonic";
 import { Toaster } from "sonner";
-const imgImage2 = "/assets/7037144404edbd4836f8798551db4a3414381141.png";
-const imgSteamLogo = "/assets/steam-logo.png";
+const imgImage2 = `${import.meta.env.BASE_URL}assets/7037144404edbd4836f8798551db4a3414381141.png`;
+const imgSteamLogo = `${import.meta.env.BASE_URL}assets/steam-logo.png`;
 import {
   NEWS_ARTICLES, GUIDE_ARTICLES, SIDEBAR_NEWS, COMPANY_NEWS,
   REVIEW_ARTICLES, GUIDE_SECTION_ARTICLES, GAME_DATABASE, RELEASE_ITEMS, RECENT_LAUNCHES,

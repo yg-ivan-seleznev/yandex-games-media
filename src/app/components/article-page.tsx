@@ -7,8 +7,8 @@ import {
   type Article,
 } from "./discovery-data";
 
-const imgImage2 = "/assets/7037144404edbd4836f8798551db4a3414381141.png";
-const imgSteamLogo = "/assets/steam-logo.png";
+const imgImage2 = `${import.meta.env.BASE_URL}assets/7037144404edbd4836f8798551db4a3414381141.png`;
+const imgSteamLogo = `${import.meta.env.BASE_URL}assets/steam-logo.png`;
 const HEADER_TABS = ["Все", "Новости", "Статьи"] as const;
 
 const glassBorderStyle: CSSProperties = {
