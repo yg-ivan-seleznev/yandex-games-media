@@ -19,12 +19,6 @@ const glassBorderStyle: React.CSSProperties = {
   WebkitMaskComposite: "xor", maskComposite: "exclude", padding: "1px", borderRadius: "inherit",
 };
 
-type PageMode = "all" | "all2" | "news" | "guide";
-const TABS: { key: PageMode; label: string }[] = [
-  { key: "all2", label: "Все" }, { key: "news", label: "Новости" },
-  { key: "guide", label: "Статьи" },
-];
-
 /* ─── Primitives ─── */
 function GlassBadge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
@@ -138,8 +132,11 @@ function isEditorialArticle(article: Article) {
 }
 
 function getContentTypeLabel(article: Article) {
+  if (article.type === "review") return "Рецензия";
   if (article.type === "guide") return "Гайд";
-  if (article.tags.includes("Рецензия")) return "Статья";
+  if (article.type === "article") return "Статья";
+  if (article.tags.includes("Рецензия")) return "Рецензия";
+  if (isEditorialArticle(article)) return "Статья";
   return "Новость";
 }
 
@@ -170,9 +167,7 @@ function LargeCard({ article, aspect }: { article: Article; aspect?: string }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-[24px] flex flex-col gap-[8px]">
         <div className="flex gap-[6px] flex-wrap">
-          {article.tags.slice(0, 2).map((tag) => (
-            <GlassBadge key={tag}><span className="font-['YS_Text',sans-serif] text-[12px] text-[rgba(255,255,255,0.90)]" style={{ fontWeight: 500 }}>{tag}</span></GlassBadge>
-          ))}
+          <ContentTypeBadge article={article} />
         </div>
         <h3 className="font-['YS_Display',sans-serif] text-[24px] text-[#ebebeb] tracking-[-0.5px] leading-[30px] line-clamp-2" style={{ fontWeight: 700 }}>{article.title}</h3>
         <div className="flex items-center gap-[8px] font-['YS_Text',sans-serif] text-[13px] text-[rgba(255,255,255,0.48)]" style={{ fontWeight: 400 }}>
@@ -191,7 +186,7 @@ function StandardCard({ article }: { article: Article }) {
       <div className="relative h-[200px] overflow-hidden shrink-0">
         <img src={article.image} alt={article.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div className="absolute top-[12px] left-[12px]">
-          <GlassBadge><span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>{article.tags[0]}</span></GlassBadge>
+          <ContentTypeBadge article={article} />
         </div>
       </div>
       <div className="p-[16px] flex flex-col gap-[8px] flex-1">
@@ -205,10 +200,10 @@ function StandardCard({ article }: { article: Article }) {
   );
 }
 
-function EditorialBadge() {
+function ContentTypeBadge({ article }: { article: Article }) {
   return (
     <GlassBadge>
-      <span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>Редакция</span>
+      <span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>{getContentTypeLabel(article)}</span>
     </GlassBadge>
   );
 }
@@ -236,9 +231,7 @@ function MasonryFeedCard({ data }: RenderComponentProps<FeedArticle>) {
       <div className="relative overflow-hidden bg-[rgba(255,255,255,0.04)]" style={{ aspectRatio: data.imageRatio }}>
         <img src={data.image} alt={data.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
         <div className="absolute left-[12px] top-[12px]">
-          <GlassBadge>
-            <span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>{data.tags[0]}</span>
-          </GlassBadge>
+          <ContentTypeBadge article={data} />
         </div>
       </div>
       <div className="flex flex-col gap-[8px] p-[14px]">
@@ -317,10 +310,9 @@ function FixedFeedCard({ article }: { article: FeedArticle }) {
     <article onClick={() => navigate(`/article/${article.id}`)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") navigate(`/article/${article.id}`); }} role="link" tabIndex={0} className="group flex h-[300px] cursor-pointer flex-col overflow-hidden rounded-[16px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] transition-colors duration-200 hover:bg-[rgba(255,255,255,0.06)] focus:outline-none focus:ring-2 focus:ring-white/30">
       <div className="relative aspect-[16/9] overflow-hidden bg-[rgba(255,255,255,0.04)]">
         <img src={article.image} alt={article.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
-        {isEditorialArticle(article) && <div className="absolute right-[12px] top-[12px]"><EditorialBadge /></div>}
+        <div className="absolute left-[12px] top-[12px]"><ContentTypeBadge article={article} /></div>
       </div>
       <div className="flex flex-1 flex-col justify-center gap-[8px] p-[14px]">
-        <div className="font-['YS_Text',sans-serif] text-[12px] leading-[16px] text-[rgba(255,255,255,0.38)]" style={{ fontWeight: 500 }}>{getContentTypeLabel(article)}</div>
         <h3 className="font-['YS_Display',sans-serif] text-[18px] leading-[22px] text-[#ebebeb]" style={{ fontWeight: 700, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{article.title}</h3>
         <div className="font-['YS_Text',sans-serif] text-[13px] leading-[18px] text-[rgba(255,255,255,0.38)]" style={{ fontWeight: 400 }}>
           {formatArticleDate(article.date)} · <ReadingTime value={article.readingTime} />
@@ -337,9 +329,8 @@ function FeatureFeedCard({ article }: { article: FeedArticle }) {
     <article onClick={() => navigate(`/article/${article.id}`)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") navigate(`/article/${article.id}`); }} role="link" tabIndex={0} className="group relative h-[300px] w-full cursor-pointer overflow-hidden rounded-[16px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] transition-colors duration-200 hover:bg-[rgba(255,255,255,0.06)] focus:outline-none focus:ring-2 focus:ring-white/30">
       <img src={article.image} alt={article.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-      {isEditorialArticle(article) && <div className="absolute right-[16px] top-[16px]"><EditorialBadge /></div>}
+      <div className="absolute left-[16px] top-[16px]"><ContentTypeBadge article={article} /></div>
       <div className="absolute bottom-[18px] left-[18px] right-[18px] flex flex-col gap-[10px]">
-        <div className="font-['YS_Text',sans-serif] text-[12px] leading-[16px] text-[rgba(255,255,255,0.56)]" style={{ fontWeight: 500, textShadow }}>{getContentTypeLabel(article)}</div>
         <h3 className="font-['YS_Display',sans-serif] text-[26px] leading-[31px] text-[#ebebeb]" style={{ fontWeight: 700, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", textShadow }}>{article.title}</h3>
         <div className="flex items-center gap-[8px] font-['YS_Text',sans-serif] text-[13px] leading-[18px] text-[rgba(255,255,255,0.56)]" style={{ fontWeight: 400, textShadow }}><span>{formatArticleDate(article.date)}</span><span>·</span><ReadingTime value={article.readingTime} /></div>
       </div>
@@ -424,7 +415,7 @@ function NewsHeroSection({ articles }: { articles: Article[] }) {
     imageRatio: "16 / 9" as FeedImageRatio,
   }));
   const [featureArticle, ...smallArticles] = sectionCards;
-  const textItems = articles.slice(0, 5);
+  const textItems = articles.slice(3, 8);
 
   if (!featureArticle) return null;
 
@@ -453,10 +444,16 @@ function NewsHeroSection({ articles }: { articles: Article[] }) {
                 <button
                   type="button"
                   onClick={() => navigate(`/article/${article.id}`)}
-                  className="group -mx-[4px] block w-[calc(100%+8px)] px-[12px] py-[10px] text-left"
+                  className="group -mx-[4px] flex w-[calc(100%+8px)] items-start gap-[12px] px-[12px] py-[10px] text-left"
                 >
-                  <p className="font-['YS_Text',sans-serif] text-[15px] leading-[19px] text-[#ebebeb] transition-colors line-clamp-3 group-hover:text-[rgba(255,255,255,0.72)]" style={{ fontWeight: 500 }}>{article.title}</p>
-                  <p className="mt-[3px] flex items-center gap-[6px] font-['YS_Text',sans-serif] text-[12px] leading-[16px] text-[rgba(255,255,255,0.36)]" style={{ fontWeight: 400 }}><span>{formatArticleDate(article.date)}</span><span>·</span><ReadingTime value={article.readingTime} /></p>
+                  <span className="relative mt-[1px] block size-[54px] shrink-0 overflow-hidden rounded-[10px] bg-white/[0.06]">
+                    <img src={article.image} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="mb-[4px] block font-['YS_Text',sans-serif] text-[11px] uppercase leading-[14px] text-[rgba(255,255,255,0.38)]" style={{ fontWeight: 700 }}>{getContentTypeLabel(article)}</span>
+                    <span className="block font-['YS_Text',sans-serif] text-[15px] leading-[19px] text-[#ebebeb] transition-colors line-clamp-3 group-hover:text-[rgba(255,255,255,0.72)]" style={{ fontWeight: 500 }}>{article.title}</span>
+                    <span className="mt-[4px] flex items-center gap-[6px] font-['YS_Text',sans-serif] text-[12px] leading-[16px] text-[rgba(255,255,255,0.36)]" style={{ fontWeight: 400 }}><span>{formatArticleDate(article.date)}</span><span>·</span><ReadingTime value={article.readingTime} /></span>
+                  </span>
                 </button>
               </div>
             );
@@ -541,12 +538,7 @@ function TextNewsList({ items, expanded, onToggle }: { items: TextNewsItem[]; ex
 
 /* ═══ PAGE ═══ */
 export function DiscoveryPage() {
-  const navigate = useNavigate();
-  const [mode, setMode] = useState<PageMode>("all2");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [releaseOffset, setReleaseOffset] = useState(0);
-  const [gameOffset, setGameOffset] = useState(0);
 
   const allArticles = useMemo(() => [
     ...NEWS_ARTICLES,
@@ -556,29 +548,16 @@ export function DiscoveryPage() {
     ...GUIDE_ARTICLES,
     ...GUIDE_SECTION_ARTICLES,
   ], []);
-  const sourceArticles = useMemo(() => {
-    if (mode === "all") return allArticles;
-    if (mode === "all2") return allArticles;
-    if (mode === "news") return allArticles.filter((article) => getContentTypeLabel(article) === "Новость");
-    if (mode === "guide") return allArticles.filter((article) => getContentTypeLabel(article) !== "Новость");
-    return allArticles;
-  }, [mode, allArticles]);
   const filteredArticles = useMemo(() => {
-    if (!searchQuery.trim()) return sourceArticles;
+    if (!searchQuery.trim()) return allArticles;
     const q = searchQuery.toLowerCase();
-    return sourceArticles.filter((a) => a.title.toLowerCase().includes(q) || a.tags.some((t) => t.toLowerCase().includes(q)) || a.category.toLowerCase().includes(q));
-  }, [sourceArticles, searchQuery]);
-
-  const trendingMain = filteredArticles[0];
-  const trendingRow2 = filteredArticles.slice(1, 4);
-  const reviewCards = REVIEW_ARTICLES.slice(0, 2);
-
-  const visibleReleases = RELEASE_ITEMS.slice(releaseOffset, releaseOffset + 4);
-  const canRelPrev = releaseOffset > 0;
-  const canRelNext = releaseOffset + 4 < RELEASE_ITEMS.length;
-  const visibleGames = GAME_DATABASE.slice(gameOffset, gameOffset + 4);
-  const canGamePrev = gameOffset > 0;
-  const canGameNext = gameOffset + 4 < GAME_DATABASE.length;
+    return allArticles.filter((a) => (
+      a.title.toLowerCase().includes(q) ||
+      a.tags.some((t) => t.toLowerCase().includes(q)) ||
+      a.category.toLowerCase().includes(q) ||
+      getContentTypeLabel(a).toLowerCase().includes(q)
+    ));
+  }, [allArticles, searchQuery]);
 
   return (
     <div className="w-full min-h-screen bg-[#141414] overflow-x-hidden pt-[70px]">
@@ -592,23 +571,10 @@ export function DiscoveryPage() {
             <div className="h-[28px] w-[61px] overflow-hidden relative max-[560px]:h-[26px] max-[560px]:w-[57px]"><img alt="Яндекс" className="absolute h-full left-0 top-0 w-[207.1%] max-w-none object-cover" src={imgImage2} /></div>
             <span className="font-['YS_Display',sans-serif] text-[28px] text-[#ebebeb] tracking-[-0.5px] whitespace-nowrap max-[560px]:hidden" style={{ fontWeight: 700 }}>Медиа</span>
           </div>
-          <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-            <div className="relative h-[40px] w-[262px] shrink-0 overflow-hidden rounded-[500px] sm:h-[44px] sm:w-auto">
-              <div className="absolute inset-0 backdrop-blur-[16px] bg-[rgba(41,41,41,0.48)] rounded-[500px]" />
-              <div className="absolute inset-0 rounded-[500px] pointer-events-none" style={glassBorderStyle} />
-              <div className="relative z-10 flex items-center h-full px-[5px] gap-[3px] sm:px-[6px]">
-                {TABS.map((tab) => (
-                  <button key={tab.key} onClick={() => setMode(tab.key)} className={`relative h-[31px] flex-1 rounded-[500px] px-[9px] flex items-center justify-center cursor-pointer transition-all duration-200 sm:h-[33px] sm:flex-none sm:px-[20px] ${mode === tab.key ? "bg-[rgba(255,255,255,0.16)]" : "hover:bg-[rgba(255,255,255,0.06)]"}`}>
-                    <span className={`font-['YS_Text',sans-serif] text-[14px] whitespace-nowrap sm:text-[15px] ${mode === tab.key ? "text-[#ebebeb]" : "text-[#a3a3a3]"}`} style={{ fontWeight: 500 }}>{tab.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="absolute left-[calc(50%+150px)] top-1/2 z-10 -translate-y-1/2 2xl:left-[calc(50%+165px)]">
+          <div className="relative z-20 ml-auto mr-[10px] shrink-0">
             <HeaderPromoControls />
           </div>
-          <div className="relative z-20 ml-auto shrink-0"><SearchButton searchQuery={searchQuery} setSearchQuery={setSearchQuery} /></div>
+          <div className="relative z-20 shrink-0"><SearchButton searchQuery={searchQuery} setSearchQuery={setSearchQuery} /></div>
         </div>
       </header>
 
@@ -618,103 +584,8 @@ export function DiscoveryPage() {
           <Search size={48} className="text-[rgba(255,255,255,0.08)] mb-[16px]" />
           <p className="font-['YS_Text',sans-serif] text-[18px] text-[rgba(255,255,255,0.24)]" style={{ fontWeight: 500 }}>Ничего не найдено</p>
         </div>
-      ) : mode === "all" ? (
-        <AllMasonryFeed articles={filteredArticles} />
-      ) : mode === "news" ? (
-        <NewsFeed articles={filteredArticles} />
-      ) : mode === "all2" || mode === "guide" ? (
-        <AllFixedFeed articles={filteredArticles} />
       ) : (
-        <div className="max-w-[1320px] mx-auto px-[16px] md:px-[32px] mt-[40px]">
-          <div className="flex flex-col gap-[48px]">
-
-            {/* ── ИГРОВЫЕ НОВОСТИ — 4-col grid: large(3) + свежее(1), then 3 cards ── */}
-            {trendingMain && (
-              <section>
-                <SectionHeading>Игровые новости</SectionHeading>
-                <div className="grid grid-cols-[minmax(0,3fr)_minmax(280px,1fr)] gap-[16px]">
-                  <div className="grid grid-cols-3 gap-[16px]">
-                    <div className="col-span-3">
-                      <LargeCard article={trendingMain} />
-                    </div>
-                    {trendingRow2.map((a) => (
-                      <StandardCard key={a.id} article={a} />
-                    ))}
-                  </div>
-                  <TextNewsList items={SIDEBAR_NEWS} expanded={sidebarExpanded} onToggle={() => setSidebarExpanded((v) => !v)} />
-                </div>
-              </section>
-            )}
-
-            <SectionDivider />
-
-            {/* ── НОВОСТИ КОМПАНИЙ — 4 cards ── */}
-            <section>
-              <SectionHeading>Новости компаний</SectionHeading>
-              <div className="grid grid-cols-4 gap-[16px]">
-                {COMPANY_NEWS.slice(0, 4).map((a) => <StandardCard key={a.id} article={a} />)}
-              </div>
-            </section>
-
-            <SectionDivider />
-
-            {/* ── РЕЦЕНЗИИ — 2 cards, each 2 cols ── */}
-            <section>
-              <SectionHeading>Рецензии</SectionHeading>
-              <div className="grid grid-cols-2 gap-[16px]">
-                {reviewCards.map((a) => <LargeCard key={a.id} article={a} aspect="16/9" />)}
-              </div>
-            </section>
-
-            <SectionDivider />
-
-            {/* ── РЕЛИЗЫ — 4 vertical 9:16 ── */}
-            <section>
-              <SectionHeading rightContent={
-                <div className="flex gap-[8px]">
-                  <GlassCircle size={40} onClick={() => canRelPrev && setReleaseOffset((o) => Math.max(0, o - 4))}><ArrowLeft size={18} className={canRelPrev ? "text-[#ebebeb]" : "text-[rgba(255,255,255,0.24)]"} /></GlassCircle>
-                  <GlassCircle size={40} onClick={() => canRelNext && setReleaseOffset((o) => o + 4)}><ArrowRight size={18} className={canRelNext ? "text-[#ebebeb]" : "text-[rgba(255,255,255,0.24)]"} /></GlassCircle>
-                </div>
-              }>Релизы</SectionHeading>
-              <div className="flex gap-[12px]">
-                {visibleReleases.map((item) => <ReleaseCard key={item.id} item={item} />)}
-              </div>
-            </section>
-
-            <SectionDivider />
-
-            {/* ── ГАЙДЫ — row1: wide(3col) + standard(1col), row2: 2 x 16:9 overlay ── */}
-            <section>
-              <SectionHeading>Статьи</SectionHeading>
-              <div className="grid grid-cols-4 gap-[16px] mb-[16px]">
-                <div className="col-span-3">
-                  <LargeCard article={GUIDE_SECTION_ARTICLES[0]} />
-                </div>
-                <div className="col-span-1">
-                  <LargeCard article={GUIDE_SECTION_ARTICLES[1]} />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-[16px]">
-                {GUIDE_SECTION_ARTICLES.slice(2, 4).map((a) => <LargeCard key={a.id} article={a} aspect="16/9" />)}
-              </div>
-            </section>
-
-            <SectionDivider />
-
-            {/* ── БАЗА ИГР — 4 vertical with arrows ── */}
-            <section>
-              <SectionHeading rightContent={
-                <div className="flex gap-[8px]">
-                  <GlassCircle size={40} onClick={() => canGamePrev && setGameOffset((o) => Math.max(0, o - 4))}><ArrowLeft size={18} className={canGamePrev ? "text-[#ebebeb]" : "text-[rgba(255,255,255,0.24)]"} /></GlassCircle>
-                  <GlassCircle size={40} onClick={() => canGameNext && setGameOffset((o) => o + 4)}><ArrowRight size={18} className={canGameNext ? "text-[#ebebeb]" : "text-[rgba(255,255,255,0.24)]"} /></GlassCircle>
-                </div>
-              }>База игр</SectionHeading>
-              <div className="flex gap-[12px]">
-                {visibleGames.map((game) => <GameCard key={game.id} game={game} />)}
-              </div>
-            </section>
-          </div>
-        </div>
+        <NewsFeed articles={filteredArticles} />
       )}
 
       {/* FOOTER */}
@@ -725,17 +596,11 @@ export function DiscoveryPage() {
         </div>
         <p className="font-['YS_Text',sans-serif] text-[14px] text-[rgba(255,255,255,0.24)]" style={{ fontWeight: 400 }}>© 2026 Яндекс Игры</p>
         <div className="flex gap-[24px]">
-          {["Главная", "Каталог игр"].map((link) => (
+          {["Главная"].map((link) => (
             <span key={link} className="font-['YS_Text',sans-serif] text-[14px] text-[rgba(255,255,255,0.48)] hover:text-[rgba(255,255,255,0.72)] transition-colors cursor-pointer" style={{ fontWeight: 500 }}>{link}</span>
           ))}
         </div>
       </footer>
-
-      <div className="fixed bottom-[24px] right-[24px] z-50">
-        <GlassPill onClick={() => navigate("/profile-reference")} className="px-[20px] py-[12px] flex items-center gap-[8px] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-          <span className="font-['YS_Text',sans-serif] text-[14px] text-[rgba(255,255,255,0.64)]" style={{ fontWeight: 500 }}>Дизайн-референс</span>
-        </GlassPill>
-      </div>
     </div>
   );
 }

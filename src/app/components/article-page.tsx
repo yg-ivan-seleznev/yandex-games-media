@@ -9,7 +9,6 @@ import {
 
 const imgImage2 = `${import.meta.env.BASE_URL}assets/7037144404edbd4836f8798551db4a3414381141.png`;
 const imgSteamLogo = `${import.meta.env.BASE_URL}assets/steam-logo.png`;
-const HEADER_TABS = ["Все", "Новости", "Статьи"] as const;
 
 const glassBorderStyle: CSSProperties = {
   background: "linear-gradient(135deg, rgba(255,255,255,0.32) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.32) 100%)",
@@ -57,6 +56,23 @@ function isEditorialArticle(article: Article) {
   return EDITORIAL_ARTICLE_IDS.has(article.id);
 }
 
+function getContentTypeLabel(article: Article) {
+  if (article.type === "review") return "Рецензия";
+  if (article.type === "guide") return "Гайд";
+  if (article.type === "article") return "Статья";
+  if (article.tags.includes("Рецензия")) return "Рецензия";
+  if (isEditorialArticle(article)) return "Статья";
+  return "Новость";
+}
+
+function ContentTypeBadge({ article }: { article: Article }) {
+  return (
+    <GlassBadge>
+      <span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>{getContentTypeLabel(article)}</span>
+    </GlassBadge>
+  );
+}
+
 function ReadingTime({ value, className = "" }: { value: string; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-[4px] ${className}`}>
@@ -99,9 +115,7 @@ function HeaderPromoControls() {
   );
 }
 
-function ArticleHeader({ activeTab }: { activeTab: "Новости" | "Статьи" }) {
-  const navigate = useNavigate();
-
+function ArticleHeader() {
   return (
     <header className="fixed left-0 right-0 top-0 z-50 w-full">
       <div className="absolute inset-0 bg-[#141414]/80 backdrop-blur-[24px]" />
@@ -112,23 +126,10 @@ function ArticleHeader({ activeTab }: { activeTab: "Новости" | "Стат�
           </div>
           <span className="font-['YS_Display',sans-serif] text-[28px] text-[#ebebeb] tracking-[-0.5px] whitespace-nowrap max-[560px]:hidden" style={{ fontWeight: 700 }}>Медиа</span>
         </div>
-        <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-          <div className="relative h-[40px] w-[262px] shrink-0 overflow-hidden rounded-[500px] sm:h-[44px] sm:w-auto">
-            <div className="absolute inset-0 rounded-[500px] bg-[rgba(41,41,41,0.48)] backdrop-blur-[16px]" />
-            <div className="absolute inset-0 rounded-[500px] pointer-events-none" style={glassBorderStyle} />
-            <div className="relative z-10 flex h-full items-center gap-[3px] px-[5px] sm:px-[6px]">
-              {HEADER_TABS.map((tab) => (
-                <button key={tab} type="button" onClick={() => navigate("/")} className={`relative flex h-[31px] flex-1 cursor-pointer items-center justify-center rounded-[500px] px-[9px] transition-all duration-200 sm:h-[33px] sm:flex-none sm:px-[20px] ${tab === activeTab ? "bg-[rgba(255,255,255,0.16)]" : "hover:bg-[rgba(255,255,255,0.06)]"}`}>
-                  <span className={`font-['YS_Text',sans-serif] text-[14px] whitespace-nowrap sm:text-[15px] ${tab === activeTab ? "text-[#ebebeb]" : "text-[#a3a3a3]"}`} style={{ fontWeight: 500 }}>{tab}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="absolute left-[calc(50%+150px)] top-1/2 z-10 -translate-y-1/2 2xl:left-[calc(50%+165px)]">
+        <div className="relative z-20 ml-auto mr-[10px] shrink-0">
           <HeaderPromoControls />
         </div>
-        <button type="button" aria-label="Поиск" className="relative z-20 ml-auto flex h-[44px] w-[46px] shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-[44px]">
+        <button type="button" aria-label="Поиск" className="relative z-20 flex h-[44px] w-[46px] shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-[44px]">
           <span className="absolute inset-0 rounded-[44px] bg-[rgba(41,41,41,0.48)] backdrop-blur-[16px]" />
           <span className="absolute inset-0 rounded-[44px] pointer-events-none" style={glassBorderStyle} />
           <Search size={20} className="relative z-10 text-[#ebebeb]" />
@@ -145,6 +146,7 @@ function RelatedCard({ article }: { article: Article }) {
     <article onClick={() => navigate(`/article/${article.id}`)} className="group w-[292px] shrink-0 cursor-pointer overflow-hidden rounded-[16px] border border-[rgba(255,255,255,0.08)] bg-white/[0.04] transition-colors hover:bg-white/[0.06] md:w-full">
       <div className="relative aspect-[16/9] overflow-hidden">
         <img src={article.image} alt={article.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
+        <div className="absolute left-[12px] top-[12px]"><ContentTypeBadge article={article} /></div>
       </div>
       <div className="flex min-h-[116px] flex-col gap-[8px] p-[14px]">
         <h3 className="font-['YS_Display',sans-serif] text-[18px] leading-[22px] text-[#ebebeb]" style={{ fontWeight: 700, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{article.title}</h3>
@@ -192,11 +194,9 @@ export function ArticlePage() {
     });
   };
 
-  const activeHeaderTab = article.type === "guide" || article.tags.includes("Рецензия") ? "Статьи" : "Новости";
-
   return (
     <div className="min-h-screen bg-[#141414] pt-[70px] text-[#ebebeb]">
-      <ArticleHeader activeTab={activeHeaderTab} />
+      <ArticleHeader />
 
       <main className="mx-auto max-w-[1360px] px-[24px] pb-[80px] md:px-[48px]">
         <article>
@@ -205,9 +205,7 @@ export function ArticlePage() {
                 <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/24 to-transparent" />
                 <div className="absolute left-[16px] top-[16px] flex flex-wrap gap-[8px]">
-                  {isEditorialArticle(article) && (
-                    <GlassBadge><span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>Редакция</span></GlassBadge>
-                  )}
+                  <ContentTypeBadge article={article} />
                   {article.tags.slice(0, 3).map((tag) => (
                     <GlassBadge key={tag}><span className="font-['YS_Text',sans-serif] text-[12px] text-[#ebebeb]" style={{ fontWeight: 500 }}>{tag}</span></GlassBadge>
                   ))}
@@ -225,7 +223,7 @@ export function ArticlePage() {
             <div className="flex flex-col gap-[24px]">
               <p className="font-['YS_Text',sans-serif] text-[20px] leading-[30px] text-white/72" style={{ fontWeight: 400 }}>{article.summary}</p>
               <div className="flex flex-col gap-[22px] font-['YS_Text',sans-serif] text-[17px] leading-[28px] text-white/68" style={{ fontWeight: 400 }}>
-              <p>Редакция собрала главное вокруг темы и разложила детали по полкам: что изменилось, почему это важно для игроков и как новость может повлиять на ближайшие релизы.</p>
+              <p>Редакция собрала главное вокруг темы и разложила детали по полкам: что изменилось, почему это важно для игроков и как материал может повлиять на ближайшие релизы.</p>
               <h2 className="pt-[8px] font-['YS_Display',sans-serif] text-[28px] leading-[34px] text-[#ebebeb]" style={{ fontWeight: 700 }}>Что изменилось</h2>
               <p>В фокусе материала не только сам анонс, но и контекст вокруг него. Для индустрии такие решения часто становятся сигналом: платформы меняют стратегию, студии перестраивают планы, а аудитория получает новые сценарии для игры.</p>
               <figure className="my-[8px] overflow-hidden rounded-[20px] border border-white/[0.08] bg-white/[0.04]">

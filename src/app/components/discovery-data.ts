@@ -8,7 +8,7 @@ export interface Article {
   readingTime: string;
   tags: string[];
   category: string;
-  type: "news" | "guide";
+  type: "news" | "article" | "guide" | "review";
 }
 
 const MONTH_LABELS: Record<string, string> = {
@@ -118,7 +118,7 @@ export const NEWS_ARTICLES: Article[] = [
     readingTime: "3 мин",
     tags: ["Half-Life", "Valve"],
     category: "Индустрия",
-    type: "news",
+    type: "article",
   },
   {
     id: "n3",
@@ -166,7 +166,7 @@ export const NEWS_ARTICLES: Article[] = [
     readingTime: "7 мин",
     tags: ["Elden Ring", "Action RPG"],
     category: "Релизы",
-    type: "news",
+    type: "article",
   },
   {
     id: "n7",
@@ -424,7 +424,7 @@ export const FRESH_NEWS: TextNewsItem[] = [
 /* ─── Section-specific articles ─── */
 
 export const COMPANY_NEWS: Article[] = [
-  { id: "cn1", title: "Microsoft завершила реструктуризацию Xbox — фокус на мультиплатформу", summary: "Глава Xbox подтвердил, что все будущие эксклюзивы будут выходить одновременно на PC и консолях.", image: IMG.corporate, date: "1h ago", author: "Иван Иванов", readingTime: "6 мин", tags: ["Microsoft", "Xbox"], category: "Индустрия", type: "news" },
+  { id: "cn1", title: "Microsoft завершила реструктуризацию Xbox — фокус на мультиплатформу", summary: "Глава Xbox подтвердил, что все будущие эксклюзивы будут выходить одновременно на PC и консолях.", image: IMG.corporate, date: "1h ago", author: "Иван Иванов", readingTime: "6 мин", tags: ["Microsoft", "Xbox"], category: "Индустрия", type: "article" },
   { id: "cn2", title: "Sony инвестирует $2 млрд в облачный гейминг", summary: "PlayStation Cloud станет конкурентом Xbox Game Pass и GeForce Now.", image: IMG.launch, date: "3h ago", author: "Мария Петрова", readingTime: "4 мин", tags: ["Sony", "Cloud"], category: "Индустрия", type: "news" },
   { id: "cn3", title: "Tencent приобрела контрольный пакет акций Ubisoft", summary: "Китайский гигант становится крупнейшим игроком индустрии.", image: IMG.neonCity, date: "5h ago", author: "Алексей Смирнов", readingTime: "5 мин", tags: ["Tencent", "Ubisoft"], category: "Индустрия", type: "news" },
   { id: "cn4", title: "EA открывает новую студию в Берлине для работы над Battlefield", summary: "Команда из 200 человек будет создавать следующую часть серии.", image: IMG.review, date: "8h ago", author: "Елена Кузнецова", readingTime: "3 мин", tags: ["EA", "Battlefield"], category: "Индустрия", type: "news" },
@@ -432,13 +432,13 @@ export const COMPANY_NEWS: Article[] = [
 ];
 
 export const REVIEW_ARTICLES: Article[] = [
-  { id: "rv1", title: "Рецензия: Elden Ring Nightreign — шедевр или провал?", summary: "Разбираем новое DLC от FromSoftware: геймплей, босс-файты и влияние на лор.", image: IMG.knight, date: "2h ago", author: "Игорь Смирнов", readingTime: "12 мин", tags: ["Elden Ring", "Рецензия"], category: "RPG", type: "news" },
-  { id: "rv2", title: "Обзор Starfield: Shattered Space — космос стал интереснее", summary: "Bethesda исправила ошибки оригинала и добавила глубину исследованию.", image: IMG.astronaut, date: "5h ago", author: "Анна Михайлова", readingTime: "10 мин", tags: ["Starfield", "Рецензия"], category: "RPG", type: "news" },
-  { id: "rv3", title: "Ghost of Tsushima 2 — самурайское совершенство", summary: "Sucker Punch создала одну из лучших игр поколения.", image: IMG.samurai, date: "Mar 5", author: "Мария Петрова", readingTime: "11 мин", tags: ["Ghost of Tsushima", "Рецензия"], category: "Экшн", type: "news" },
-  { id: "rv4", title: "Обзор Subnautica 3: океан стал глубже и опаснее", summary: "Кооперативный режим меняет всё — выживать вместе веселее.", image: IMG.deepSea, date: "Mar 4", author: "Алексей Смирнов", readingTime: "9 мин", tags: ["Subnautica 3", "Рецензия"], category: "Выживание", type: "news" },
-  { id: "rv5", title: "Fallout 5: первые впечатления от раннего доступа", summary: "Bethesda вернулась к корням — RPG-механики наконец на высоте.", image: IMG.wasteland, date: "Mar 3", author: "Дмитрий Соколов", readingTime: "8 мин", tags: ["Fallout 5", "Рецензия"], category: "RPG", type: "news" },
-  { id: "rv6", title: "Armored Core VII — мехи вернулись в большой стиль", summary: "FromSoftware доказывает, что серия жива и актуальна.", image: IMG.mech, date: "Mar 2", author: "Иван Иванов", readingTime: "10 мин", tags: ["Armored Core", "Рецензия"], category: "Экшн", type: "news" },
-  { id: "rv7", title: "Frostpunk 2 — город должен выжить снова", summary: "11 bit studios превзошли оригинал во всём.", image: IMG.snow, date: "Mar 1", author: "Ольга Петрова", readingTime: "9 мин", tags: ["Frostpunk 2", "Рецензия"], category: "Стратегии", type: "news" },
+  { id: "rv1", title: "Рецензия: Elden Ring Nightreign — шедевр или провал?", summary: "Разбираем новое DLC от FromSoftware: геймплей, босс-файты и влияние на лор.", image: IMG.knight, date: "2h ago", author: "Игорь Смирнов", readingTime: "12 мин", tags: ["Elden Ring", "Рецензия"], category: "RPG", type: "review" },
+  { id: "rv2", title: "Обзор Starfield: Shattered Space — космос стал интереснее", summary: "Bethesda исправила ошибки оригинала и добавила глубину исследованию.", image: IMG.astronaut, date: "5h ago", author: "Анна Михайлова", readingTime: "10 мин", tags: ["Starfield", "Рецензия"], category: "RPG", type: "review" },
+  { id: "rv3", title: "Ghost of Tsushima 2 — самурайское совершенство", summary: "Sucker Punch создала одну из лучших игр поколения.", image: IMG.samurai, date: "Mar 5", author: "Мария Петрова", readingTime: "11 мин", tags: ["Ghost of Tsushima", "Рецензия"], category: "Экшн", type: "review" },
+  { id: "rv4", title: "Обзор Subnautica 3: океан стал глубже и опаснее", summary: "Кооперативный режим меняет всё — выживать вместе веселее.", image: IMG.deepSea, date: "Mar 4", author: "Алексей Смирнов", readingTime: "9 мин", tags: ["Subnautica 3", "Рецензия"], category: "Выживание", type: "review" },
+  { id: "rv5", title: "Fallout 5: первые впечатления от раннего доступа", summary: "Bethesda вернулась к корням — RPG-механики наконец на высоте.", image: IMG.wasteland, date: "Mar 3", author: "Дмитрий Соколов", readingTime: "8 мин", tags: ["Fallout 5", "Рецензия"], category: "RPG", type: "review" },
+  { id: "rv6", title: "Armored Core VII — мехи вернулись в большой стиль", summary: "FromSoftware доказывает, что серия жива и актуальна.", image: IMG.mech, date: "Mar 2", author: "Иван Иванов", readingTime: "10 мин", tags: ["Armored Core", "Рецензия"], category: "Экшн", type: "review" },
+  { id: "rv7", title: "Frostpunk 2 — город должен выжить снова", summary: "11 bit studios превзошли оригинал во всём.", image: IMG.snow, date: "Mar 1", author: "Ольга Петрова", readingTime: "9 мин", tags: ["Frostpunk 2", "Рецензия"], category: "Стратегии", type: "review" },
 ];
 
 export const RECENT_LAUNCHES: Article[] = [
