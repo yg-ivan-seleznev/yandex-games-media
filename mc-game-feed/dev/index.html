@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>game-feed Preview</title>
+    
+    <!-- CSS tokens (dev only) -->
+    <link rel="stylesheet" href="./tokens.css" />
+
+    <style>
+        /* YS Text fonts (for preview only, production already has them) */
+        @font-face {
+            font-family: 'YS Text';
+            src: url('https://yastatic.net/s3/home/fonts/ys/3/text-regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'YS Text';
+            src: url('https://yastatic.net/s3/home/fonts/ys/3/text-medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--basic-font-family);
+            background: var(--color-background-dark-purple-gradient);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="module" src="./main.tsx"></script>
+</body>
+</html>

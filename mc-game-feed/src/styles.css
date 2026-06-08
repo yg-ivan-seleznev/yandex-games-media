@@ -1,0 +1,532 @@
+.mc-game-feed {
+    box-sizing: border-box;
+    display: flex;
+    height: 100svh;
+    min-height: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    overflow: hidden;
+    background: var(--bg-default, #101113);
+    color: var(--text-inverse, #fff);
+    font-family: var(--basic-font-family, 'YS Text', -apple-system, BlinkMacSystemFont, sans-serif);
+}
+
+.mc-game-feed *,
+.mc-game-feed *::before,
+.mc-game-feed *::after {
+    box-sizing: border-box;
+}
+
+.mc-game-feed--closed {
+    padding: 24px;
+}
+
+.mc-game-feed__dialog {
+    display: flex;
+    width: min(430px, calc(100vw - 20px));
+    height: calc(100svh - 20px);
+    min-height: 0;
+    flex-direction: column;
+}
+
+.mc-game-feed__header {
+    display: flex;
+    height: 44px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mc-game-feed__brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.mc-game-feed__logo {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.mc-game-feed__logo-image,
+.mc-game-feed__cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mc-game-feed__title {
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mc-game-feed__close-button,
+.mc-game-feed__open-button,
+.mc-game-feed__play-button {
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.mc-game-feed__close-button {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.86);
+    transition: opacity 180ms ease-out;
+}
+
+.mc-game-feed__close-button:hover {
+    opacity: 0.72;
+}
+
+.mc-game-feed__close-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.mc-game-feed__player {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 26px;
+    background: #000;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    touch-action: none;
+}
+
+.mc-game-feed__player--skeleton,
+.mc-game-feed__player--error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 26px;
+    background: #000;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
+
+.mc-game-feed__page-track,
+.mc-game-feed__page-slot,
+.mc-game-feed__page {
+    position: absolute;
+    inset: 0;
+}
+
+.mc-game-feed__page-track {
+    will-change: transform;
+}
+
+.mc-game-feed__preload {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mc-game-feed__preload video {
+    width: 1px;
+    height: 1px;
+}
+
+.mc-game-feed__page-track--transitioning {
+    transition: transform 380ms cubic-bezier(0.22, 0.82, 0.26, 1);
+}
+
+.mc-game-feed__page-track--dragging {
+    transition: none;
+}
+
+.mc-game-feed__page-slot {
+    overflow: hidden;
+    will-change: transform;
+}
+
+.mc-game-feed__page {
+    overflow: hidden;
+    background: #000;
+}
+
+.mc-game-feed__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mc-game-feed__scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.08) 52%, rgba(0, 0, 0, 0.18));
+}
+
+.mc-game-feed__bottom-fade {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 220px;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.24), transparent);
+}
+
+.mc-game-feed__playback-toggle {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.mc-game-feed__playback-indicator {
+    display: flex;
+    width: 72px;
+    height: 72px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.34);
+    opacity: 0;
+    transform: scale(0.86);
+    transition: opacity 160ms ease-out, transform 160ms ease-out;
+    backdrop-filter: blur(10px);
+}
+
+.mc-game-feed__playback-indicator--visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.mc-game-feed__playback-icon {
+    display: block;
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.32));
+}
+
+.mc-game-feed__meta {
+    position: absolute;
+    z-index: 2;
+    right: 12px;
+    bottom: 14px;
+    left: 12px;
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 20px;
+    background: rgba(42, 42, 44, 0.94);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(22px);
+}
+
+.mc-game-feed__meta--skeleton {
+    pointer-events: none;
+}
+
+.mc-game-feed__cover {
+    display: block;
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
+}
+
+.mc-game-feed__text {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.mc-game-feed__game-title,
+.mc-game-feed__categories {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mc-game-feed__game-title {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 20px;
+}
+
+.mc-game-feed__categories {
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+}
+
+.mc-game-feed__play-button {
+    display: flex;
+    min-width: 92px;
+    height: 58px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-radius: 12px;
+    background: #6d56fc;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 20px;
+    transition: transform 180ms ease-out;
+}
+
+.mc-game-feed__play-button:hover {
+    transform: scale(1.02);
+}
+
+.mc-game-feed__play-button:active {
+    transform: scale(0.98);
+}
+
+.mc-game-feed__progress {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: rgba(109, 86, 252, 0.24);
+}
+
+.mc-game-feed__progress-fill {
+    height: 100%;
+    background: #6d56fc;
+}
+
+.mc-game-feed__skeleton-video {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02) 42%, rgba(255, 255, 255, 0.07));
+}
+
+.mc-game-feed__skeleton-item {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.mc-game-feed__skeleton-item::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    transform: translateX(-100%);
+    animation: mc-game-feed-shimmer 1400ms ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+}
+
+.mc-game-feed__skeleton-cover {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 12px;
+}
+
+.mc-game-feed__skeleton-text {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.mc-game-feed__skeleton-line {
+    display: block;
+    height: 14px;
+    border-radius: 999px;
+}
+
+.mc-game-feed__skeleton-line--title {
+    width: 78%;
+}
+
+.mc-game-feed__skeleton-line--caption {
+    width: 62%;
+    opacity: 0.72;
+}
+
+.mc-game-feed__skeleton-button {
+    width: 92px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 12px;
+}
+
+.mc-game-feed__error-panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: min(320px, calc(100% - 40px));
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 18px;
+    border-radius: 20px;
+    background: rgba(34, 34, 36, 0.88);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+    text-align: center;
+    backdrop-filter: blur(20px);
+}
+
+.mc-game-feed__error-title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 22px;
+}
+
+.mc-game-feed__error-message {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.mc-game-feed__error-actions {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.mc-game-feed__retry-button,
+.mc-game-feed__dismiss-button {
+    display: flex;
+    min-width: 0;
+    height: 44px;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 12px;
+    padding: 0 14px;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 18px;
+    cursor: pointer;
+    transition: opacity 180ms ease-out, transform 180ms ease-out;
+}
+
+.mc-game-feed__retry-button {
+    background: #6d56fc;
+}
+
+.mc-game-feed__dismiss-button {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mc-game-feed__retry-button:hover,
+.mc-game-feed__dismiss-button:hover {
+    opacity: 0.86;
+}
+
+.mc-game-feed__retry-button:active,
+.mc-game-feed__dismiss-button:active {
+    transform: scale(0.98);
+}
+
+.mc-game-feed__open-button {
+    min-height: 42px;
+    border-radius: 14px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    transition: background-color 180ms ease-out;
+}
+
+.mc-game-feed__open-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.mc-game-feed__empty {
+    display: flex;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    align-items: center;
+    justify-content: center;
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.mc-game-feed__empty-title {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+@media (max-width: 360px) {
+    .mc-game-feed__meta {
+        gap: 8px;
+    }
+
+    .mc-game-feed__cover {
+        width: 50px;
+        height: 50px;
+    }
+
+    .mc-game-feed__play-button {
+        min-width: 78px;
+        padding: 0 14px;
+        font-size: 14px;
+    }
+
+    .mc-game-feed__skeleton-button {
+        width: 78px;
+    }
+}
+
+@keyframes mc-game-feed-shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
